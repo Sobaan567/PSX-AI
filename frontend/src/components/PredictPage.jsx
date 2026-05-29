@@ -31,6 +31,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { readJson } from '../api'
 
 const API = import.meta.env.VITE_API_URL || ''
 
@@ -60,18 +61,6 @@ function toneColor(tone) {
   if (tone === 'fall') return 'var(--fall)'
   if (tone === 'blue') return '#38bdf8'
   return 'var(--gold)'
-}
-
-async function readErrorMessage(res, fallback) {
-  const text = await res.text()
-  if (!text) return fallback
-
-  try {
-    const payload = JSON.parse(text)
-    return payload.detail || payload.message || text
-  } catch {
-    return text
-  }
 }
 
 function Card({ children, style }) {
@@ -200,11 +189,7 @@ export default function PredictPage() {
 
     try {
       const res = await fetch(`${API}/api/predict/${encodeURIComponent(clean)}?days=${nextHorizon}`)
-      if (!res.ok) {
-        const message = await readErrorMessage(res, 'Could not fetch prediction.')
-        throw new Error(message)
-      }
-      const data = await res.json()
+      const data = await readJson(res, 'Could not fetch prediction.')
       setResult(data)
       setLastRun(new Date())
     } catch (err) {

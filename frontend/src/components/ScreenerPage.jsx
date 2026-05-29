@@ -12,6 +12,7 @@ import {
   TrendingDown,
   TrendingUp,
 } from 'lucide-react'
+import { readJson } from '../api'
 
 const API = import.meta.env.VITE_API_URL || ''
 
@@ -130,7 +131,7 @@ export default function ScreenerPage() {
     try {
       const res = await fetch(`${API}/api/market`)
       if (res.ok) {
-        const data = await res.json()
+        const data = await readJson(res, 'Could not load market data.')
         const list = Array.isArray(data) ? data : data?.data
         if (list?.length) setStocks(list.map(normalizeStock))
       }

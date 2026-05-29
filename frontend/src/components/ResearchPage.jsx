@@ -18,6 +18,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { readJson } from '../api'
 
 const API = import.meta.env.VITE_API_URL || ''
 
@@ -98,8 +99,7 @@ export default function ResearchPage() {
     setBacktestError('')
     try {
       const res = await fetch(`${API}/api/backtest/${clean}?strategy=${strategy}&lookback=${lookback}&cash=${cash}`)
-      if (!res.ok) throw new Error(await res.text())
-      setBacktest(await res.json())
+      setBacktest(await readJson(res, 'Could not run backtest for this symbol and strategy.'))
     } catch (err) {
       setBacktestError('Could not run backtest for this symbol and strategy.')
     } finally {
@@ -112,7 +112,7 @@ export default function ResearchPage() {
     try {
       const res = await fetch(`${API}/api/news?limit=36`)
       if (res.ok) {
-        const payload = await res.json()
+        const payload = await readJson(res, 'Could not load API data.')
         setNews(payload.data || [])
       }
     } finally {
@@ -125,7 +125,7 @@ export default function ResearchPage() {
     try {
       const res = await fetch(`${API}/api/calendar?from=${fromDate}&to=${toDate}`)
       if (res.ok) {
-        const payload = await res.json()
+        const payload = await readJson(res, 'Could not load API data.')
         setCalendar(payload.data || [])
       }
     } finally {

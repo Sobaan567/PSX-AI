@@ -35,6 +35,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import { readJson } from '../api'
 
 const API = import.meta.env.VITE_API_URL || ''
 
@@ -675,13 +676,13 @@ export default function Dashboard({ searchRequest }) {
         fetch(`${API}/api/brief`),
       ])
       if (marketRes.ok) {
-        const data = await marketRes.json()
+        const data = await readJson(marketRes, 'Could not load market data.')
         const list = Array.isArray(data) ? data : data?.data
         if (list?.length) setStocks(list.map(normalizeStock))
       }
-      if (gainersRes.ok) setGainers((await gainersRes.json()).map(normalizeStock))
-      if (losersRes.ok) setLosers((await losersRes.json()).map(normalizeStock))
-      if (briefRes.ok) setBrief(await briefRes.json())
+      if (gainersRes.ok) setGainers((await readJson(gainersRes, 'Could not load gainers.')).map(normalizeStock))
+      if (losersRes.ok) setLosers((await readJson(losersRes, 'Could not load losers.')).map(normalizeStock))
+      if (briefRes.ok) setBrief(await readJson(briefRes, 'Could not load market brief.'))
     } catch {
       const fallback = MOCK_STOCKS.map(normalizeStock)
       setStocks(fallback)
@@ -769,7 +770,7 @@ export default function Dashboard({ searchRequest }) {
         fetch(`${API}/api/predict/${cleanSymbol}`),
       ])
       if (historyRes.ok) {
-        const payload = await historyRes.json()
+        const payload = await readJson(historyRes, 'Could not load price history.')
         const rows = Array.isArray(payload.data?.data) ? payload.data.data : []
         setSelectedHistory(rows.map(row => ({
           time: row[0],
@@ -778,7 +779,7 @@ export default function Dashboard({ searchRequest }) {
           open: Number(row[3] || row[1]),
         })).reverse())
       }
-      if (forecastRes.ok) setSelectedForecast(await forecastRes.json())
+      if (forecastRes.ok) setSelectedForecast(await readJson(forecastRes, 'Could not load forecast.'))
     } catch {
       setSelectedHistory([])
     }

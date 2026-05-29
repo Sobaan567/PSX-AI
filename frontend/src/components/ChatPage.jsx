@@ -17,6 +17,7 @@ import {
   User,
   Wallet,
 } from 'lucide-react'
+import { readJson } from '../api'
 
 const API = import.meta.env.VITE_API_URL || ''
 
@@ -60,17 +61,6 @@ function renderMarkdown(text) {
     .replace(/\n/g, '<br />')
 }
 
-async function readErrorMessage(res, fallback) {
-  const text = await res.text()
-  if (!text) return fallback
-
-  try {
-    const payload = JSON.parse(text)
-    return payload.detail || payload.message || text
-  } catch {
-    return text
-  }
-}
 
 function Card({ children, style }) {
   return (
@@ -167,7 +157,7 @@ export default function ChatPage() {
     setContextLoading(true)
     try {
       const res = await fetch(`${API}/api/chat/context`)
-      if (res.ok) setContext(await res.json())
+      if (res.ok) setContext(await readJson(res, 'Could not load chat context.'))
     } finally {
       setContextLoading(false)
     }
@@ -198,12 +188,7 @@ export default function ChatPage() {
         body: JSON.stringify({ message: msg, history }),
       })
 
-      if (!res.ok) {
-        const detail = await readErrorMessage(res, 'Could not reach the AI backend.')
-        throw new Error(detail)
-      }
-
-      const data = await res.json()
+      const data = await readJson(res, 'Could not reach the AI backend.')
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply, mode: data.mode || 'gemini' }])
       if (data.context) setContext(data.context)
     } catch (err) {
