@@ -4,6 +4,34 @@ PSX AI is a machine learning focused stock analysis project for the Pakistan Sto
 
 The main ML goal is not to promise exact stock prices. The goal is to estimate short-term direction, expected move, confidence, support/resistance, and risk using explainable market features.
 
+## Live Deployment
+
+Frontend:
+
+```text
+https://psx-ai-1jb1.vercel.app
+```
+
+Backend:
+
+```text
+https://psx-ai-xs14.vercel.app
+```
+
+Quick backend checks:
+
+```text
+https://psx-ai-xs14.vercel.app/
+https://psx-ai-xs14.vercel.app/api/market
+https://psx-ai-xs14.vercel.app/api/chat/context
+```
+
+The deployed frontend should use this environment variable:
+
+```text
+VITE_API_URL=https://psx-ai-xs14.vercel.app
+```
+
 ## What The ML System Does
 
 The prediction pipeline lives in `backend/main.py`, mainly inside the `/api/predict/{symbol}` endpoint.
