@@ -1151,7 +1151,20 @@ def predict(symbol: str, days: int = Query(5, ge=1, le=10)):
 def build_chat_context(message: str):
     market = fetch_market_watch()
     if isinstance(market, dict) and "error" in market:
-        return {"error": market["error"], "symbols": [], "market": {}}
+        return {
+            "time_utc": datetime.utcnow().isoformat(),
+            "warning": f"Live PSX context unavailable: {market['error']}",
+            "symbols": [],
+            "market": {
+                "active_symbols": 0,
+                "advancing": 0,
+                "declining": 0,
+                "breadth": 0,
+                "top_gainers": [],
+                "top_losers": [],
+                "volume_leaders": [],
+            },
+        }
 
     active = [stock for stock in market if parse_float(stock.get("current", 0)) > 0]
     gainers = sorted([s for s in active if parse_float(s.get("change", 0)) > 0], key=lambda x: parse_float(x.get("pchange", 0)), reverse=True)[:6]
@@ -1243,16 +1256,11 @@ def fallback_chat_reply(message: str, context: dict):
 
 @app.get("/api/chat/context")
 def get_chat_context():
-    context = build_chat_context("")
-    if isinstance(context, dict) and "error" in context:
-        raise HTTPException(status_code=502, detail=context["error"])
-    return context
+    return build_chat_context("")
 
 @app.post("/api/chat")
 async def chat(body: ChatMessage):
     context = build_chat_context(body.message)
-    if isinstance(context, dict) and "error" in context:
-        raise HTTPException(status_code=502, detail=context["error"])
 
     if not GEMINI_API_KEY:
         return {
