@@ -55,9 +55,21 @@ function renderMarkdown(text) {
   return escaped
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/`(.*?)`/g, '<code>$1</code>')
-    .replace(/^- (.*)$/gm, '<span class="chat-bullet">• $1</span>')
-    .replace(/^\*\s+(.*)$/gm, '<span class="chat-bullet">• $1</span>')
+    .replace(/^- (.*)$/gm, '<span class="chat-bullet">â€¢ $1</span>')
+    .replace(/^\*\s+(.*)$/gm, '<span class="chat-bullet">â€¢ $1</span>')
     .replace(/\n/g, '<br />')
+}
+
+async function readErrorMessage(res, fallback) {
+  const text = await res.text()
+  if (!text) return fallback
+
+  try {
+    const payload = JSON.parse(text)
+    return payload.detail || payload.message || text
+  } catch {
+    return text
+  }
 }
 
 function Card({ children, style }) {
@@ -187,13 +199,7 @@ export default function ChatPage() {
       })
 
       if (!res.ok) {
-        let detail = 'Could not reach the AI backend.'
-        try {
-          const payload = await res.json()
-          detail = payload.detail || detail
-        } catch {
-          detail = await res.text()
-        }
+        const detail = await readErrorMessage(res, 'Could not reach the AI backend.')
         throw new Error(detail)
       }
 

@@ -62,6 +62,18 @@ function toneColor(tone) {
   return 'var(--gold)'
 }
 
+async function readErrorMessage(res, fallback) {
+  const text = await res.text()
+  if (!text) return fallback
+
+  try {
+    const payload = JSON.parse(text)
+    return payload.detail || payload.message || text
+  } catch {
+    return text
+  }
+}
+
 function Card({ children, style }) {
   return (
     <div style={{
@@ -189,13 +201,7 @@ export default function PredictPage() {
     try {
       const res = await fetch(`${API}/api/predict/${encodeURIComponent(clean)}?days=${nextHorizon}`)
       if (!res.ok) {
-        let message = 'Could not fetch prediction.'
-        try {
-          const payload = await res.json()
-          message = payload.detail || message
-        } catch {
-          message = await res.text()
-        }
+        const message = await readErrorMessage(res, 'Could not fetch prediction.')
         throw new Error(message)
       }
       const data = await res.json()
