@@ -30,7 +30,10 @@ export default function App() {
   const minute = now.getMinutes()
   const minutes = hour * 60 + minute
   const isWeekday = day >= 1 && day <= 5
-  const marketOpen = isWeekday && minutes >= 9 * 60 + 30 && minutes <= 15 * 60 + 30
+  const marketStart = 9 * 60 + 30
+  const marketEnd = 15 * 60 + 30
+  const marketOpen = isWeekday && minutes >= marketStart && minutes <= marketEnd
+  const marketStatus = marketOpen ? 'Live Now' : isWeekday ? 'Open Today' : 'Weekend'
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -42,8 +45,9 @@ export default function App() {
         onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       />
       <div className="market-status-bar" aria-label="Market status">
-        <span><strong>{marketOpen ? 'Market Open' : 'Market Closed'}</strong></span>
+        <span><strong>{marketStatus}</strong></span>
         <span>PKT {now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        {isWeekday && !marketOpen && <span>Regular session 09:30-15:30</span>}
         <span>Source: PSX market-watch + EOD history</span>
         <span>Theme: {theme}</span>
       </div>
