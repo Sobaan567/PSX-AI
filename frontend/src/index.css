@@ -826,8 +826,22 @@ select:focus-visible {
 }
 
 @media (max-width: 900px) {
+  html {
+    font-size: 15px;
+  }
+
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  nav[style] {
+    height: 64px !important;
+    padding: 0 14px !important;
+    gap: 12px !important;
+  }
+
   .app-main {
-    padding: 112px 14px 88px;
+    padding: 96px 12px 92px;
   }
 
   .desktop-nav-links,
@@ -841,7 +855,7 @@ select:focus-visible {
 
   .mobile-nav-panel {
     position: fixed;
-    top: 80px;
+    top: 70px;
     left: 10px;
     right: 10px;
     z-index: 120;
@@ -855,10 +869,78 @@ select:focus-visible {
   }
 
   .market-status-bar {
-    top: 80px;
+    top: 64px;
     overflow-x: auto;
     justify-content: flex-start;
     white-space: nowrap;
+    min-height: 30px;
+    gap: 12px;
+    padding-inline: 12px;
+  }
+
+  main section,
+  main div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  main div[style*="minmax(320px"],
+  main div[style*="minmax(280px"],
+  main div[style*="minmax(190px"],
+  main div[style*="minmax(170px"],
+  main div[style*="minmax(150px"],
+  main div[style*="repeat(5"],
+  main div[style*="repeat(4"],
+  main div[style*="repeat(3"],
+  main div[style*="repeat(2"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  main h1 {
+    font-size: 26px !important;
+    line-height: 1.1 !important;
+  }
+
+  main h2 {
+    font-size: 18px !important;
+  }
+
+  main h3 {
+    font-size: 15px !important;
+  }
+
+  main p,
+  main div {
+    max-width: 100%;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 16px !important;
+  }
+
+  button {
+    min-height: 40px;
+  }
+
+  button:hover:not(:disabled) {
+    transform: none;
+  }
+
+  form[style],
+  label[style] {
+    min-width: 0 !important;
+  }
+
+  input,
+  select {
+    min-width: 0 !important;
+    width: 100%;
+  }
+
+  .premium-card,
+  main div[style*="border-radius"] {
+    border-radius: 9px !important;
   }
 
   .bottom-tabs {
@@ -889,6 +971,11 @@ select:focus-visible {
     cursor: pointer;
   }
 
+  .bottom-tabs svg {
+    width: 15px;
+    height: 15px;
+  }
+
   .bottom-tabs button.active {
     color: var(--gold);
     background: color-mix(in srgb, var(--gold), transparent 88%);
@@ -897,14 +984,127 @@ select:focus-visible {
   .drawer-grid {
     grid-template-columns: 1fr;
   }
+
+  footer {
+    display: none !important;
+  }
 }
 
 @media (max-width: 640px) {
+  .app-main {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  nav span[style*="font-size: 18"] {
+    font-size: 16px !important;
+  }
+
+  nav div[style*="width: 40"] {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .mobile-nav-panel {
+    max-height: calc(100vh - 90px);
+    overflow: auto;
+  }
+
   .stock-drawer {
     width: 100%;
   }
 
+  .stock-drawer-overlay {
+    align-items: stretch;
+  }
+
+  .stock-drawer {
+    border-left: 0;
+  }
+
   .market-status-bar span:nth-child(n+3) {
     display: none;
+  }
+
+  .pulse-shell {
+    min-height: auto;
+    padding: 14px;
+  }
+
+  .pulse-layout,
+  .signal-command {
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .pulse-core-wrap {
+    min-height: 260px;
+    overflow: hidden;
+  }
+
+  .pulse-core {
+    width: min(280px, 100%);
+  }
+
+  .pulse-core-center {
+    width: 112px;
+    height: 112px;
+  }
+
+  .pulse-orbit-node {
+    --radius: 116px;
+    width: 58px;
+    height: 38px;
+    margin-left: -29px;
+    margin-top: -19px;
+  }
+
+  .pulse-tape {
+    margin: 16px -14px -14px;
+  }
+
+  .pulse-tape button {
+    min-width: 160px;
+    height: 40px;
+    padding: 0 12px;
+  }
+
+  .signal-card {
+    min-height: 96px;
+  }
+
+  .sector-stars {
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  main div[style*="minWidth: 850"],
+  main div[style*="minWidth: 880"],
+  main div[style*="minWidth: 900"],
+  main div[style*="min-width: 850"],
+  main div[style*="min-width: 880"],
+  main div[style*="min-width: 900"] {
+    min-width: 720px !important;
+  }
+
+  main div[style*="maxWidth: 'min(760px"],
+  main div[style*="max-width: min(760px"] {
+    max-width: calc(100vw - 84px) !important;
+  }
+
+  .chat-message {
+    overflow-wrap: anywhere;
+  }
+
+  .bottom-tabs {
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border-radius: 12px;
+  }
+
+  .bottom-tabs button {
+    padding: 0 2px;
+    font-size: 9px !important;
   }
 }
