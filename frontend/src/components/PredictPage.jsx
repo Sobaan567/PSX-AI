@@ -33,7 +33,9 @@ import {
 } from 'recharts'
 import { readJson } from '../api'
 
-const API = import.meta.env.VITE_API_URL || ''
+import { API_BASE } from '../config'
+
+const API = API_BASE
 
 const POPULAR = ['OGDC', 'ENGRO', 'HBL', 'PSO', 'LUCK', 'MARI', 'TRG', 'UBL', 'MCB', 'HUBC', 'MLCF', 'SYS']
 const HORIZONS = [1, 3, 5, 10]

@@ -14,7 +14,9 @@ import {
 } from 'lucide-react'
 import { readJson } from '../api'
 
-const API = import.meta.env.VITE_API_URL || ''
+import { API_BASE } from '../config'
+
+const API = API_BASE
 
 const sectorLabels = {
   '0801': 'Automobile Assembler', '0802': 'Automobile Parts', '0803': 'Cable & Electrical', '0804': 'Cement',

@@ -19,7 +19,9 @@ import {
 } from 'lucide-react'
 import { readJson } from '../api'
 
-const API = import.meta.env.VITE_API_URL || ''
+import { API_BASE } from '../config'
+
+const API = API_BASE
 
 const QUICK_ACTIONS = [
   { label: 'Market mood', prompt: 'Give me a quick PSX market mood summary with breadth, gainers, losers, and volume leaders.' },

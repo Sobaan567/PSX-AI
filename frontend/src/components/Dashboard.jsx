@@ -37,7 +37,9 @@ import {
 } from 'recharts'
 import { readJson } from '../api'
 
-const API = import.meta.env.VITE_API_URL || ''
+import { API_BASE } from '../config'
+
+const API = API_BASE
 
 const MOCK_STOCKS = [
   { symbol: 'OGDC', sector: 'Oil & Gas Exploration', ldcp: 316.7, current: 318.53, high: 319.9, low: 315.5, open: 317.7, change: 1.83, pchange: 0.58, volume: 3194694 },

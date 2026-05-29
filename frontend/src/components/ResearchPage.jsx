@@ -20,7 +20,9 @@ import {
 } from 'recharts'
 import { readJson } from '../api'
 
-const API = import.meta.env.VITE_API_URL || ''
+import { API_BASE } from '../config'
+
+const API = API_BASE
 
 function Card({ children, style }) {
   return (
